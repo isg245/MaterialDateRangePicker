@@ -5,20 +5,20 @@ ext {
     bintrayRepo = 'maven'
     bintrayName = 'material-datetime-rangepicker'
 
-    publishedGroupId = 'com.borax12.materialdaterangepicker'
+    publishedGroupId = 'com.isg245.materialdaterangepicker'
     libraryName = 'MaterialDateRangePicker'
     artifact = 'library'
 
     libraryDescription = 'A material Date and Time Range Picker for Android'
 
-    siteUrl = 'https://github.com/borax12/MaterialDateRangePicker'
-    gitUrl = 'https://github.com/borax12/MaterialDateRangePicker.git'
+    siteUrl = 'https://github.com/isg245/MaterialDateRangePicker'
+    gitUrl = 'https://github.com/isg245/MaterialDateRangePicker.git'
 
     libraryVersion = '1.3'
 
-    developerId = 'borax12'
-    developerName = 'Supratim Chakraborty'
-    developerEmail = 'sup270792@gmail.com'
+    developerId = 'isg245'
+    developerName = 'Isaac Graza'
+    developerEmail = 'isaacgarza432@gmail.com'
 
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
