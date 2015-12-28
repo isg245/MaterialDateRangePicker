@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.borax12.materialdaterangepicker.date;
+package com.isg245.materialdaterangepicker.date;
 
 import java.util.Calendar;
 
@@ -27,11 +27,11 @@ public interface DatePickerController {
 
     void onDayOfMonthSelected(int year, int month, int day);
 
-    void registerOnDateChangedListener(com.borax12.materialdaterangepicker.date.DatePickerDialog.OnDateChangedListener listener);
+    void registerOnDateChangedListener(com.isg245.materialdaterangepicker.date.DatePickerDialog.OnDateChangedListener listener);
 
-    void unregisterOnDateChangedListener(com.borax12.materialdaterangepicker.date.DatePickerDialog.OnDateChangedListener listener);
+    void unregisterOnDateChangedListener(com.isg245.materialdaterangepicker.date.DatePickerDialog.OnDateChangedListener listener);
 
-    com.borax12.materialdaterangepicker.date.MonthAdapter.CalendarDay getSelectedDay();
+    com.isg245.materialdaterangepicker.date.MonthAdapter.CalendarDay getSelectedDay();
 
     boolean isThemeDark();
     

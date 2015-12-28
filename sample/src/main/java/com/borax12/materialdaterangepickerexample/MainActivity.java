@@ -8,9 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.borax12.materialdaterangepicker.date.DatePickerDialog;
-import com.borax12.materialdaterangepicker.time.RadialPickerLayout;
-import com.borax12.materialdaterangepicker.time.TimePickerDialog;
+import com.isg245.materialdaterangepicker.date.DatePickerDialog;
+import com.isg245.materialdaterangepicker.time.RadialPickerLayout;
+import com.isg245.materialdaterangepicker.time.TimePickerDialog;
 
 import java.util.Calendar;
 
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Calendar now = Calendar.getInstance();
-                DatePickerDialog dpd = com.borax12.materialdaterangepicker.date.DatePickerDialog.newInstance(
+                DatePickerDialog dpd = com.isg245.materialdaterangepicker.date.DatePickerDialog.newInstance(
                         MainActivity.this,
                         now.get(Calendar.YEAR),
                         now.get(Calendar.MONTH),

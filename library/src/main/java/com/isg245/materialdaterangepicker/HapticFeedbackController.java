@@ -1,4 +1,4 @@
-package com.borax12.materialdaterangepicker;
+package com.isg245.materialdaterangepicker;
 
 import android.app.Service;
 import android.content.Context;

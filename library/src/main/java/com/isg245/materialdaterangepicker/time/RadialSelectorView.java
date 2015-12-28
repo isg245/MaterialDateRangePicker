@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.borax12.materialdaterangepicker.time;
+package com.isg245.materialdaterangepicker.time;
 
 import android.animation.Keyframe;
 import android.animation.ObjectAnimator;
@@ -28,8 +28,8 @@ import android.graphics.Paint;
 import android.util.Log;
 import android.view.View;
 
-import com.borax12.materialdaterangepicker.R;
-import com.borax12.materialdaterangepicker.Utils;
+import com.isg245.materialdaterangepicker.R;
+import com.isg245.materialdaterangepicker.Utils;
 
 
 /**
