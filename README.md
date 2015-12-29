@@ -1,6 +1,9 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-MaterialDateRangePicker-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/2501)
 
+This is the exact version of borax12's material-datetime range picker that can be found here:
 [ ![Download](https://api.bintray.com/packages/borax12/maven/material-datetime-rangepicker/images/download.svg) ](https://bintray.com/borax12/maven/material-datetime-rangepicker/_latestVersion)
+
+All I have changed is the library to now support android.support.v4.app.FragmentManager instead.
 
 Material Date and Time Picker with Range Selection
 ======================================================
@@ -15,11 +18,12 @@ Add the jcenter repository information in your build.gradle file like this
 
 repositories {
   jcenter()
+  maven { url "https://jitpack.io" }
 }
 
 
 dependencies {
-  compile 'com.borax12.materialdaterangepicker:library:1.2'
+  compile 'com.github.isg245:MaterialDateRangePicker:1.3'
 }
 
 ```
@@ -106,7 +110,3 @@ tpd.show(getFragmentManager(), "Timepickerdialog");
 ```
 
 For other documentation regarding theming , handling orientation changes , and callbacks - check out the original documentation - https://github.com/wdullaer/MaterialDateTimePicker
-
-TODO
-----
-1. More device config handling
