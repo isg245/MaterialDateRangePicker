@@ -23,7 +23,7 @@ repositories {
 
 
 dependencies {
-  compile 'com.github.isg245:MaterialDateRangePicker:1.3'
+  compile 'com.github.isg245:MaterialDateRangePicker:1.4'
 }
 
 ```
