@@ -49,8 +49,6 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Locale;
 
-
-
 /**
  * Dialog allowing users to select a date.
  */
@@ -75,8 +73,8 @@ public class DatePickerDialog extends DialogFragment implements
     private static final String KEY_WEEK_START_END = "week_start_end";
     private static final String KEY_YEAR_START = "year_start";
     private static final String KEY_YEAR_START_END = "year_start_end";
-    private static final String KEY_YEAR_END = "year_end";
-    private static final String KEY_YEAR_END_END = "year_end_end";
+    private static final String KEY_MAX_YEAR = "max_year";
+    private static final String KEY_MAX_YEAR_END = "max_year_end";
     private static final String KEY_CURRENT_VIEW = "current_view";
     private static final String KEY_CURRENT_VIEW_END = "current_view_end";
     private static final String KEY_LIST_POSITION_OFFSET = "list_position_offset";
@@ -160,6 +158,8 @@ public class DatePickerDialog extends DialogFragment implements
     private com.isg245.materialdaterangepicker.date.YearPickerView mYearPickerViewEnd;
     private com.isg245.materialdaterangepicker.date.AccessibleDateAnimator mAnimatorEnd;
     private int tabTag=1;
+    private String startTitle;
+    private String endTitle;
 
     /**
      * The callback used to indicate the user is done filling in the date.
@@ -180,7 +180,6 @@ public class DatePickerDialog extends DialogFragment implements
      * The callback used to notify other date picker components of a change in selected date.
      */
     public interface OnDateChangedListener {
-
         void onDateChanged();
     }
 
@@ -203,14 +202,41 @@ public class DatePickerDialog extends DialogFragment implements
         return ret;
     }
 
+    /**
+     *
+     * @param callBack How the parent is notified that the date is set.
+     * @param year The initial year of the dialog.
+     * @param monthOfYear The initial month of the dialog.
+     * @param dayOfMonth The initial day of the dialog.
+     * @param yearEnd The end year of the dialog.
+     * @param montOfYearEnd The end month of the dialog.
+     * @param dayOfMonthEnd  The end day of the dialog.
+     */
+    public static DatePickerDialog newInstance(OnDateSetListener callBack, int year,
+                                               int monthOfYear,
+                                               int dayOfMonth,
+                                               int yearEnd,
+                                               int montOfYearEnd,
+                                               int dayOfMonthEnd) {
+        DatePickerDialog ret = new DatePickerDialog();
+        ret.initialize(callBack, year, monthOfYear, dayOfMonth, yearEnd, montOfYearEnd, dayOfMonthEnd);
+        return ret;
+    }
+
     public void initialize(OnDateSetListener callBack, int year, int monthOfYear, int dayOfMonth) {
+        initialize(callBack, year, monthOfYear, dayOfMonth, year, monthOfYear, dayOfMonth);
+    }
+
+    public void initialize(OnDateSetListener callBack, int year, int monthOfYear, int dayOfMonth, int yearEnd,
+                           int montOfYearEnd,
+                           int dayOfMonthEnd) {
         mCallBack = callBack;
         mCalendar.set(Calendar.YEAR, year);
         mCalendar.set(Calendar.MONTH, monthOfYear);
         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        mCalendarEnd.set(Calendar.YEAR, year);
-        mCalendarEnd.set(Calendar.MONTH, monthOfYear);
-        mCalendarEnd.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        mCalendarEnd.set(Calendar.YEAR, yearEnd);
+        mCalendarEnd.set(Calendar.MONTH, montOfYearEnd);
+        mCalendarEnd.set(Calendar.DAY_OF_MONTH, dayOfMonthEnd);
 
         mThemeDark = false;
         mAccentColor = -1;
@@ -242,14 +268,14 @@ public class DatePickerDialog extends DialogFragment implements
         outState.putInt(KEY_SELECTED_DAY, mCalendar.get(Calendar.DAY_OF_MONTH));
         outState.putInt(KEY_WEEK_START, mWeekStart);
         outState.putInt(KEY_YEAR_START, mMinYear);
-        outState.putInt(KEY_YEAR_END, mMaxYear);
+        outState.putInt(KEY_MAX_YEAR, mMaxYear);
         outState.putInt(KEY_CURRENT_VIEW, mCurrentView);
         outState.putInt(KEY_SELECTED_YEAR_END, mCalendarEnd.get(Calendar.YEAR));
         outState.putInt(KEY_SELECTED_MONTH_END, mCalendarEnd.get(Calendar.MONTH));
         outState.putInt(KEY_SELECTED_DAY_END, mCalendarEnd.get(Calendar.DAY_OF_MONTH));
         outState.putInt(KEY_WEEK_START_END, mWeekStartEnd);
         outState.putInt(KEY_YEAR_START_END, mMinYear);
-        outState.putInt(KEY_YEAR_END_END, mMaxYear);
+        outState.putInt(KEY_MAX_YEAR_END, mMaxYear);
         outState.putInt(KEY_CURRENT_VIEW_END, mCurrentViewEnd);
         int listPosition = -1;
         int listPositionEnd = -1;
@@ -294,11 +320,11 @@ public class DatePickerDialog extends DialogFragment implements
 
         TabHost.TabSpec startDatePage = tabHost.newTabSpec("start");
         startDatePage.setContent(R.id.start_date_group);
-        startDatePage.setIndicator(activity.getResources().getString(R.string.mdtp_from));
+        startDatePage.setIndicator((startTitle != null && !startTitle.isEmpty()) ? startTitle : activity.getResources().getString(R.string.mdtp_from));
 
         TabHost.TabSpec endDatePage = tabHost.newTabSpec("end");
         endDatePage.setContent(R.id.end_date_group);
-        endDatePage.setIndicator(activity.getResources().getString(R.string.mdtp_to));
+        endDatePage.setIndicator((endTitle!=null&&!endTitle.isEmpty())?endTitle:activity.getResources().getString(R.string.mdtp_to));
 
         tabHost.addTab(startDatePage);
         tabHost.addTab(endDatePage);
@@ -330,7 +356,7 @@ public class DatePickerDialog extends DialogFragment implements
             mWeekStart = savedInstanceState.getInt(KEY_WEEK_START);
             mWeekStartEnd = savedInstanceState.getInt(KEY_WEEK_START_END);
             mMinYear = savedInstanceState.getInt(KEY_YEAR_START);
-            mMaxYear = savedInstanceState.getInt(KEY_YEAR_END);
+            mMaxYear = savedInstanceState.getInt(KEY_MAX_YEAR);
             currentView = savedInstanceState.getInt(KEY_CURRENT_VIEW);
             currentViewEnd = savedInstanceState.getInt(KEY_CURRENT_VIEW_END);
             listPosition = savedInstanceState.getInt(KEY_LIST_POSITION);
@@ -705,11 +731,33 @@ public class DatePickerDialog extends DialogFragment implements
     }
 
     /**
+     * Sets the minimal date supported by this DatePicker. Dates before (but not including) the
+     * specified date will be disallowed from being selected.
+     * @param calendar a Calendar object set to the year, month, day desired as the mindate.
+     */
+    @SuppressWarnings("unused")
+    public void setMinDateEnd(Calendar calendar) {
+        mMinDateEnd = calendar;
+
+        if (mDayPickerView != null&&mDayPickerViewEnd!=null) {
+            mDayPickerViewEnd.onChange();
+        }
+    }
+
+    /**
      * @return The minimal date supported by this DatePicker. Null if it has not been set.
      */
     @Override
     public Calendar getMinDate() {
         return mMinDate;
+    }
+
+    /**
+     * @return The minimal date supported by this DatePicker. Null if it has not been set.
+     */
+    @SuppressWarnings("unused")
+    public Calendar getMinDateEnd() {
+        return mMinDateEnd;
     }
 
     /**
@@ -850,7 +898,7 @@ public class DatePickerDialog extends DialogFragment implements
             mCalendarEnd.set(Calendar.DAY_OF_MONTH, day);
         }
 
-        updatePickers();
+//        updatePickers();
         updateDisplay(true);
     }
 
@@ -861,8 +909,13 @@ public class DatePickerDialog extends DialogFragment implements
 
     @Override
     public com.isg245.materialdaterangepicker.date.MonthAdapter.CalendarDay getSelectedDay() {
-        return new com.isg245.materialdaterangepicker.date.MonthAdapter.CalendarDay(mCalendar);
+        if (tabHost.getCurrentTab() == 0) {
+            return new com.isg245.materialdaterangepicker.date.MonthAdapter.CalendarDay(mCalendar);
+        } else {
+            return new com.isg245.materialdaterangepicker.date.MonthAdapter.CalendarDay(mCalendarEnd);
+        }
     }
+
 
     @Override
     public int getMinYear() {
@@ -896,5 +949,21 @@ public class DatePickerDialog extends DialogFragment implements
     @Override
     public void tryVibrate() {
         if(mVibrate) mHapticFeedbackController.tryVibrate();
+    }
+
+    /**
+     * setStartTitle
+     * @param startTitle the title to display for start panel
+     */
+    public void setStartTitle(String startTitle) {
+        this.startTitle = startTitle;
+    }
+
+    /**
+     * setEndTitle
+     * @param endTitle the title to display for end panel
+     */
+    public void setEndTitle(String endTitle) {
+        this.endTitle = endTitle;
     }
 }
