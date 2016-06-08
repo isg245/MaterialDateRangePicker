@@ -382,7 +382,6 @@ public class DatePickerDialog extends DialogFragment implements
         mDayPickerViewEnd = new com.isg245.materialdaterangepicker.date.SimpleDayPickerView(activity, this);
         mYearPickerViewEnd = new com.isg245.materialdaterangepicker.date.YearPickerView(activity, this);
 
-
         Resources res = getResources();
         mDayPickerDescription = res.getString(R.string.mdtp_day_picker_description);
         mSelectDay = res.getString(R.string.mdtp_select_day);
@@ -429,6 +428,7 @@ public class DatePickerDialog extends DialogFragment implements
                     mCallBack.onDateSet(DatePickerDialog.this, mCalendar.get(Calendar.YEAR),
                             mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH),mCalendarEnd.get(Calendar.YEAR),
                             mCalendarEnd.get(Calendar.MONTH), mCalendarEnd.get(Calendar.DAY_OF_MONTH));
+                    mMinDateEnd = mCalendar;
                 }
                 dismiss();
             }
@@ -631,6 +631,7 @@ public class DatePickerDialog extends DialogFragment implements
             String fullDateTextEnd = DateUtils.formatDateTime(getActivity(), millisEnd, flags);
             Utils.tryAccessibilityAnnounce(mAnimator, fullDateText);
             Utils.tryAccessibilityAnnounce(mAnimatorEnd, fullDateTextEnd);
+            mMinDateEnd = mCalendar;
         }
     }
 

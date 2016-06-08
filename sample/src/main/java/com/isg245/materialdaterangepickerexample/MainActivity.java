@@ -1,4 +1,4 @@
-package com.borax12.materialdaterangepickerexample;
+package com.isg245.materialdaterangepickerexample;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
