@@ -328,6 +328,12 @@ public class DatePickerDialog extends DialogFragment implements
 
         tabHost.addTab(startDatePage);
         tabHost.addTab(endDatePage);
+        endDatePage.setOnClickListener(new OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               mMinDateEnd = mCalendar;
+           }
+        });
 
         mDayOfWeekView = (TextView) view.findViewById(R.id.date_picker_header);
         mMonthAndDayView = (LinearLayout) view.findViewById(R.id.date_picker_month_and_day);
@@ -428,7 +434,6 @@ public class DatePickerDialog extends DialogFragment implements
                     mCallBack.onDateSet(DatePickerDialog.this, mCalendar.get(Calendar.YEAR),
                             mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH),mCalendarEnd.get(Calendar.YEAR),
                             mCalendarEnd.get(Calendar.MONTH), mCalendarEnd.get(Calendar.DAY_OF_MONTH));
-                    mMinDateEnd = mCalendar;
                 }
                 dismiss();
             }
@@ -631,7 +636,6 @@ public class DatePickerDialog extends DialogFragment implements
             String fullDateTextEnd = DateUtils.formatDateTime(getActivity(), millisEnd, flags);
             Utils.tryAccessibilityAnnounce(mAnimator, fullDateText);
             Utils.tryAccessibilityAnnounce(mAnimatorEnd, fullDateTextEnd);
-            mMinDateEnd = mCalendar;
         }
     }
 
